@@ -9,19 +9,15 @@ public class JdbcTemplateStub {
     private static final String ALREADY_LOCKED = "Already locked";
     private boolean isLocked = false;
 
-    public int update(String sql, Object... args) {
+    public synchronized int update(String sql, Object... args) {
         if (CREATE_LOCK_QUERY.equals(sql)) {
-            synchronized (this) {
-                if (isLocked) {
-                    throw new DataAccessException(ALREADY_LOCKED) {
-                    };
-                }
-                isLocked = true;
+            if (isLocked) {
+                throw new DataAccessException(ALREADY_LOCKED) {
+                };
             }
+            isLocked = true;
         } else {
-            synchronized (this) {
-                isLocked = false;
-            }
+            isLocked = false;
         }
         return 0;
     }
