@@ -10,10 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 import static java.util.concurrent.ForkJoinPool.commonPool;
@@ -73,7 +70,7 @@ public class LockManagerTest {
     }
 
     private void testLockManagerWorks(ALockManager lockManager) {
-        Collection<Exception> exceptions = new Vector<>();
+        Collection<Exception> exceptions = Collections.synchronizedSet(new HashSet<>());
         Callable<Object> firstTask = createFirstTask(lockManager, exceptions);
         Callable<Object> secondTask = createSecondTask(lockManager, exceptions);
         commonPool().invokeAll(List.of(firstTask, secondTask));

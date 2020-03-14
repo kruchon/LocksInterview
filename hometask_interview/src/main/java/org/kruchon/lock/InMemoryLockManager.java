@@ -2,13 +2,14 @@ package org.kruchon.lock;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class InMemoryLockManager extends AStorageLockManager {
 
-    private final Set<String> locks = ConcurrentHashMap.newKeySet();
+    private final Set<String> locks = Collections.synchronizedSet(new HashSet<>());
 
     @Override
     protected boolean tryToCreateLock(String id, long totalTimeToRetry) {
