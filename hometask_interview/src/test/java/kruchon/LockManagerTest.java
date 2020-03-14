@@ -44,7 +44,7 @@ public class LockManagerTest {
         T1_BEGIN, T2_BEGIN, T1_END, T2_END
     }
 
-    private List<HistoryRecord> history = new LinkedList<>();
+    private Collection<HistoryRecord> history = Collections.synchronizedList(new LinkedList<>());
 
     @Before
     public void setUp() {
